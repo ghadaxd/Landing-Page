@@ -17,6 +17,10 @@
  * Define Global Variables
  *
  */
+const nav = document.querySelector("#navbar__list");
+const sections = document.querySelectorAll("section[data-nav]");
+let previousActiveSection = sections[0];
+let previousActiveNavLink;
 
 /**
  * End Global Variables
@@ -32,8 +36,6 @@
 
 // build the nav
 function buildNavigationMenu() {
-  const nav = document.querySelector("#navbar__list");
-  const sections = document.querySelectorAll("section[data-nav]");
   const navItemsFragment = document.createDocumentFragment();
 
   for (let i = 0; i < sections.length; i++) {
@@ -47,6 +49,9 @@ function buildNavigationMenu() {
       navLink.setAttribute("class", "menu__link");
     }
 
+    navLink.setAttribute("id", `secLink${i + 1}`);
+    previousActiveNavLink = navLink;
+
     navLink.textContent = sections[i].getAttribute("data-nav");
 
     navItem.appendChild(navLink);
@@ -57,6 +62,26 @@ function buildNavigationMenu() {
 }
 
 // Add class 'active' to section when near top of viewport
+function setActiveSection(scrollPosition) {
+  for (let i = 0; i < sections.length; i++) {
+    if (
+      (i + 1 === sections.length && scrollPosition >= sections[i].offsetTop) ||
+      (scrollPosition >= sections[i].offsetTop &&
+        scrollPosition < sections[i + 1].offsetTop)
+    ) {
+      previousActiveSection.classList.remove("active__section");
+      sections[i].classList.add("active__section");
+      previousActiveSection = sections[i];
+
+      previousActiveNavLink.classList.remove("menu__item__active");
+      const activeNavLink = nav.querySelector(`#secLink${i + 1}`);
+      activeNavLink.classList.add("menu__item__active");
+      previousActiveNavLink = activeNavLink;
+
+      break;
+    }
+  }
+}
 
 // Scroll to anchor ID using scrollTO event
 
@@ -67,7 +92,14 @@ function buildNavigationMenu() {
  */
 
 // Build menu
+// when document is "ready".
+document.addEventListener("DOMContentLoaded", buildNavigationMenu());
 
 // Scroll to section on link click
+// when a link is "clicked"
 
 // Set sections as active
+document.addEventListener("scroll", function (e) {
+  let topOfViewport = e.target.defaultView.visualViewport.pageTop;
+  setActiveSection(topOfViewport);
+});

@@ -19,8 +19,6 @@
  */
 const nav = document.querySelector("#navbar__list");
 const sections = document.querySelectorAll("section[data-nav]");
-let previousActiveSection = sections[0];
-let previousActiveNavLink;
 
 /**
  * End Global Variables
@@ -35,55 +33,73 @@ let previousActiveNavLink;
  */
 
 // build the nav
-function buildNavigationMenu() {
-  const navItemsFragment = document.createDocumentFragment();
+const buildNavigationMenu = () => {
+  const navItemsFragment = document.createDocumentFragment(); // gathering all li's in one fragment container for better performance.
 
   for (let i = 0; i < sections.length; i++) {
     let navItem = document.createElement("li");
     let navLink = document.createElement("a");
-
-    // Setting up the first item in the menu as active by default
-    if (i === 0) {
-      navLink.setAttribute("class", "menu__link menu__item__active");
-    } else {
-      navLink.setAttribute("class", "menu__link");
-    }
-
-    navLink.setAttribute("id", `secLink${i + 1}`);
-    previousActiveNavLink = navLink;
-
-    navLink.textContent = sections[i].getAttribute("data-nav");
+    // Setting up the anchor element in navigation:
+    navLink.setAttribute("class", "menu__link"); // to apply style.
+    navLink.setAttribute("id", `secLink${i}`); // to use when scrolling.
+    navLink.setAttribute("href", `#`); // to look clickable.
+    navLink.textContent = sections[i].getAttribute("data-nav"); // getting the title of the nav item.
 
     navItem.appendChild(navLink);
     navItemsFragment.appendChild(navItem);
   }
 
   nav.appendChild(navItemsFragment);
-}
+};
 
 // Add class 'active' to section when near top of viewport
-function setActiveSection(scrollPosition) {
+const setActiveSection = () => {
+  let scrollTopPosition = window.scrollY; // the top value of the window to compare with.
+  let previousActiveSection;
+  let previousActiveNavLink;
+
   for (let i = 0; i < sections.length; i++) {
+    // looping through all sections.
+    // checking whenever a section top reaches the top of viewport.
     if (
-      (i + 1 === sections.length && scrollPosition >= sections[i].offsetTop) ||
-      (scrollPosition >= sections[i].offsetTop &&
-        scrollPosition < sections[i + 1].offsetTop)
+      scrollTopPosition >= sections[i].offsetTop &&
+      scrollTopPosition < sections[i].offsetTop + sections[i].clientHeight
     ) {
-      previousActiveSection.classList.remove("active__section");
+      // if so, then:
+
+      // set section as active and update previous section if it's defined to not be active.
+      // previousActiveSection will be undefined at first, until scrolling and reaching a section.
+      previousActiveSection !== undefined &&
+        previousActiveSection.classList.remove("active__section");
       sections[i].classList.add("active__section");
       previousActiveSection = sections[i];
 
-      previousActiveNavLink.classList.remove("menu__item__active");
-      const activeNavLink = nav.querySelector(`#secLink${i + 1}`);
+      // set navigation link as active and update previous navigation link if it's defined to not be active.
+      // previousActiveNavLink will be undefined at first, until scrolling and reaching a section.
+      previousActiveNavLink !== undefined &&
+        previousActiveNavLink.classList.remove("menu__item__active");
+      const activeNavLink = nav.querySelector(`#secLink${i}`);
       activeNavLink.classList.add("menu__item__active");
       previousActiveNavLink = activeNavLink;
-
       break;
     }
   }
-}
+};
 
 // Scroll to anchor ID using scrollTO event
+const scrollToSection = (e) => {
+  e.preventDefault();
+  // Making sure that an anchor is clicked by checking the node name.
+  if (e.target.nodeName === "A") {
+    // Getting section id to scroll to, which is the same id concat in anchor id "#secLink${i}"
+    const linkId = e.target.id;
+    const sectionId = linkId.slice(linkId.indexOf("k") + 1);
+
+    sections[sectionId].scrollIntoView({
+      behavior: "smooth",
+    });
+  }
+};
 
 /**
  * End Main Functions
@@ -92,14 +108,10 @@ function setActiveSection(scrollPosition) {
  */
 
 // Build menu
-// when document is "ready".
-document.addEventListener("DOMContentLoaded", buildNavigationMenu());
+document.addEventListener("DOMContentLoaded", buildNavigationMenu);
 
 // Scroll to section on link click
-// when a link is "clicked"
+nav.addEventListener("click", scrollToSection);
 
 // Set sections as active
-document.addEventListener("scroll", function (e) {
-  let topOfViewport = e.target.defaultView.visualViewport.pageTop;
-  setActiveSection(topOfViewport);
-});
+window.addEventListener("scroll", setActiveSection);

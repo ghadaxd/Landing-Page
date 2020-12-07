@@ -7,6 +7,9 @@ This is a multi-section landing page, with respect to dynamic content it builds 
 ## Extra Features
 
 - As the section in the viewport is been highlighted, the corresponding navigation link is also highlighted.
+- Update design/content.
+- Scroll to top.
+- Hide navigation when scrolling is stopped while going through the page.
 
 ## Refrences
 

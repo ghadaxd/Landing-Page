@@ -21,7 +21,7 @@ const nav = document.querySelector("#navbar__list");
 const sections = document.querySelectorAll("section[data-nav]");
 let previousActiveSection;
 let previousActiveNavLink;
-
+let isScrolling;
 /**
  * End Global Variables
  * Start Helper Functions
@@ -58,6 +58,9 @@ const buildNavigationMenu = () => {
 const setActiveSection = () => {
   let scrollTopPosition = window.scrollY; // the top value of the window to compare with.
   const goTopLink = document.querySelector("#go__top");
+  const navbar = document.querySelector(".page__header");
+  navbar.setAttribute("style", "display: block");
+  clearTimeout(isScrolling);
 
   for (let i = 0; i < sections.length; i++) {
     // looping through all sections.
@@ -93,6 +96,17 @@ const setActiveSection = () => {
       goTopLink.setAttribute("style", "display: none;");
     }
   }
+  // Hiding navigation bar when scrolling is stopped
+  isScrolling = setTimeout(function () {
+    // Check if it reaches the top of the page
+    if (scrollTopPosition < sections[0].offsetTop) {
+      // if so, then show the navigation
+      navbar.setAttribute("style", "display: block");
+    } else {
+      // else, hide the navigation
+      navbar.setAttribute("style", "display: none");
+    }
+  }, 1000);
 };
 
 // Scroll to anchor ID using scrollTO event

@@ -59,6 +59,7 @@ main {
 section {
   position: relative;
   min-height: 100vh;
+  padding: 0 8em;
 }
 
 /* ---- Module Rules ---- */
@@ -119,6 +120,16 @@ section {
 
 ol {
   direction: rtl;
+}
+
+#go__top {
+  text-decoration: none;
+  color: rgb(2, 179, 228);
+  background-color: #fff;
+  padding: 1em;
+  position: fixed;
+  bottom: 7em;
+  left: 4em;
 }
 
 @media only screen and (min-width: 35em) {

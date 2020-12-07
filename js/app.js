@@ -57,6 +57,7 @@ const buildNavigationMenu = () => {
 // Add class 'active' to section when near top of viewport
 const setActiveSection = () => {
   let scrollTopPosition = window.scrollY; // the top value of the window to compare with.
+  const goTopLink = document.querySelector("#go__top");
 
   for (let i = 0; i < sections.length; i++) {
     // looping through all sections.
@@ -81,6 +82,7 @@ const setActiveSection = () => {
       const activeNavLink = nav.querySelector(`#secLink${i}`);
       activeNavLink.classList.add("menu__item__active");
       previousActiveNavLink = activeNavLink;
+      goTopLink.setAttribute("style", "display: block;");
       break;
     } else if (scrollTopPosition < sections[0].offsetTop) {
       // else, when it reaches the top of the page.
@@ -88,6 +90,7 @@ const setActiveSection = () => {
         previousActiveSection.classList.remove("active__section");
       previousActiveNavLink &&
         previousActiveNavLink.classList.remove("menu__item__active");
+      goTopLink.setAttribute("style", "display: none;");
     }
   }
 };
@@ -107,6 +110,14 @@ const scrollToSection = (e) => {
   }
 };
 
+// Scroll to top function
+const scrollToTop = (e) => {
+  e.preventDefault();
+  document.querySelector("#top").scrollIntoView({
+    behavior: "smooth",
+  });
+};
+
 /**
  * End Main Functions
  * Begin Events
@@ -121,3 +132,6 @@ nav.addEventListener("click", scrollToSection);
 
 // Set sections as active
 window.addEventListener("scroll", setActiveSection);
+
+// Scroll to top
+document.querySelector("#go__top").addEventListener("click", scrollToTop);

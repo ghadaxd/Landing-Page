@@ -7,3 +7,9 @@ This is a multi-section landing page, with respect to dynamic content it builds 
 ## Extra Features
 
 - As the section in the viewport is been highlighted, the corresponding navigation link is also highlighted.
+
+## Refrences
+
+- Used font: https://fonts.google.com/?selection.family=Cantarell&sidebar.open=true&preview.text=Ghada&preview.text_type=custom&query=Cantarell
+
+- Used a style which look like udacity.

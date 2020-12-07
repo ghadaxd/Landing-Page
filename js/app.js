@@ -19,6 +19,8 @@
  */
 const nav = document.querySelector("#navbar__list");
 const sections = document.querySelectorAll("section[data-nav]");
+let previousActiveSection;
+let previousActiveNavLink;
 
 /**
  * End Global Variables
@@ -55,8 +57,6 @@ const buildNavigationMenu = () => {
 // Add class 'active' to section when near top of viewport
 const setActiveSection = () => {
   let scrollTopPosition = window.scrollY; // the top value of the window to compare with.
-  let previousActiveSection;
-  let previousActiveNavLink;
 
   for (let i = 0; i < sections.length; i++) {
     // looping through all sections.
@@ -69,19 +69,25 @@ const setActiveSection = () => {
 
       // set section as active and update previous section if it's defined to not be active.
       // previousActiveSection will be undefined at first, until scrolling and reaching a section.
-      previousActiveSection !== undefined &&
+      previousActiveSection &&
         previousActiveSection.classList.remove("active__section");
       sections[i].classList.add("active__section");
       previousActiveSection = sections[i];
 
       // set navigation link as active and update previous navigation link if it's defined to not be active.
       // previousActiveNavLink will be undefined at first, until scrolling and reaching a section.
-      previousActiveNavLink !== undefined &&
+      previousActiveNavLink &&
         previousActiveNavLink.classList.remove("menu__item__active");
       const activeNavLink = nav.querySelector(`#secLink${i}`);
       activeNavLink.classList.add("menu__item__active");
       previousActiveNavLink = activeNavLink;
       break;
+    } else if (scrollTopPosition < sections[0].offsetTop) {
+      // else, when it reaches the top of the page.
+      previousActiveSection &&
+        previousActiveSection.classList.remove("active__section");
+      previousActiveNavLink &&
+        previousActiveNavLink.classList.remove("menu__item__active");
     }
   }
 };

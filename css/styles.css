@@ -104,6 +104,7 @@ section {
   background: #fff;
   padding: 1em;
   color: rgb(2, 179, 228);
+  width: 100%;
 }
 
 .page__footer p {
@@ -156,4 +157,41 @@ section:nth-of-type(even) .landing__container {
     rgba(255, 255, 255, 0.2) 0%,
     rgba(255, 255, 255, 0.2) 100%
   );
+}
+
+/* For mobile  */
+@media (max-width: 450px) {
+  .navbar__menu ul {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 10%;
+    font-size: 0.8em;
+  }
+  .navbar__menu ul li {
+    width: 6em;
+  }
+  .main__hero {
+    width: 111%;
+    border: none;
+  }
+  h1 {
+    margin: 5em 0;
+    margin-bottom: 0;
+  }
+  section {
+    width: 111%;
+    padding: 0;
+    /* border: 1px solid yellow; */
+  }
+  h2 {
+    font-size: 2em;
+  }
+  .landing__container {
+    padding-top: 3em;
+  }
+  #go__top {
+    bottom: 8.3em;
+  }
 }

@@ -57,6 +57,7 @@ const buildNavigationMenu = () => {
 // Add class 'active' to section when near top of viewport
 const setActiveSection = () => {
   let scrollTopPosition = window.scrollY; // the top value of the window to compare with.
+  let sectionOffsetTop;
   const goTopLink = document.querySelector("#go__top");
   const navbar = document.querySelector(".page__header");
   navbar.setAttribute("style", "display: block");
@@ -65,9 +66,13 @@ const setActiveSection = () => {
   for (let i = 0; i < sections.length; i++) {
     // looping through all sections.
     // checking whenever a section top reaches the top of viewport.
+    sectionOffsetTop = sections[i].offsetTop - navbar.clientHeight;
+    // since we are comparing the section offset top with the top of the viewport,
+    // we need to take the navbar into consideration,
+    // because it's fixed at the top and will be over section content.
     if (
-      scrollTopPosition >= sections[i].offsetTop &&
-      scrollTopPosition < sections[i].offsetTop + sections[i].clientHeight
+      scrollTopPosition >= sectionOffsetTop &&
+      scrollTopPosition < sectionOffsetTop + sections[i].clientHeight
     ) {
       // if so, then:
 
@@ -106,7 +111,7 @@ const setActiveSection = () => {
       // else, hide the navigation
       navbar.setAttribute("style", "display: none");
     }
-  }, 1000);
+  }, 3000);
 };
 
 // Scroll to anchor ID using scrollTO event

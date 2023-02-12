@@ -11,6 +11,9 @@ This is a multi-section landing page, with respect to dynamic content it builds 
 - Scroll to top.
 - Hide navigation when scrolling is stopped while going through the page.
 
+## Live Demo
+https://ghadaxd.github.io/Landing-Page/
+
 ## Refrences
 
 - Used font: https://fonts.google.com/?selection.family=Cantarell&sidebar.open=true&preview.text=Ghada&preview.text_type=custom&query=Cantarell
